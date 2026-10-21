@@ -33,13 +33,14 @@ const pos=[];for(let r=0;r<4;r++)for(let c=0;c<5;c++)pos.push([14+c*18+(c>1?4:0)
 const STORE='https://api.restful-api.dev/objects/ff808181a09d98f701a16011bd084771';
 let remote=[],local=JSON.parse(localStorage.getItem('aiSeats')||'[]');
 const box=document.getElementById('seats');
-async function getList(){const r=await fetch(STORE+'?t='+Date.now(),{cache:'no-store'});if(!r.ok)throw 0;const d=await r.json();return ((d.data||{}).taken||[]).map(Number)}
+async function getList(){const r=await fetch(STORE+'?t='+Date.now(),{cache:'no-store'});if(!r.ok)throw 0;const d=await r.json();const v=((d.data||{}).taken||[]).map(Number).filter(n=>Number.isInteger(n)&&n>=1&&n<=MAX);return [...new Set(v)]}
 async function putList(l){const r=await fetch(STORE,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:'ai-seats',data:{taken:l}})});if(!r.ok)throw 0}
 pos.forEach((p,i)=>{const b=document.createElement('button');b.className='s free';b.style.left=p[0]+'%';b.style.top=p[1]+'%';b.textContent=i+1;b.dataset.n=i+1;b.setAttribute('aria-label','Seat '+(i+1));
 b.onclick=async()=>{const n=i+1;if(taken().has(n)){alert('Sorry, just taken');return}if(!confirm('Reserve Seat #'+n+'?'))return;
-try{const l=await getList();remote=l;if(l.includes(n)){draw();alert('Sorry, just taken');return}l.push(n);await putList(l);remote=l}catch(e){}
+try{const l=await getList();remote=l;if(l.includes(n)){draw();alert('Sorry, just taken');return}l.push(n);await putList(l);remote=l;for(let k=0;k<3;k++){await new Promise(r=>setTimeout(r,800+Math.random()*700));const c=await getList();if(c.includes(n)){remote=c;break}c.push(n);await putList(c);remote=c}}catch(e){}
 if(!local.includes(n))local.push(n);localStorage.setItem('aiSeats',JSON.stringify(local));draw();
-location.href=MAIL+encodeURIComponent('Seat #'+n+'\nName: \nHow many coming: \nPhone (optional): ');};box.appendChild(b)});
+const href=MAIL+encodeURIComponent('Seat #'+n+'\nName: \nHow many coming: \nPhone (optional): ');showMail(n,href);location.href=href;};box.appendChild(b)});
+function showMail(n,href){let d=document.getElementById('mailbar');if(!d){d=document.createElement('div');d.id='mailbar';d.style.cssText='position:fixed;left:0;right:0;bottom:0;background:#4a2f1d;color:#fff;padding:1em;text-align:center;z-index:9;font-weight:700';document.body.appendChild(d)}d.innerHTML='Seat #'+n+' is held for you. <a style="color:#e2a54a" href="'+href+'">Tap here to email Carl and confirm</a>'}
 function taken(){return new Set([...remote,...local].map(Number))}
 function draw(){const t=taken();box.querySelectorAll('.s').forEach(b=>{const k=t.has(+b.dataset.n);b.className='s '+(k?'taken':'free');b.textContent=k?'✕':b.dataset.n;b.disabled=false;b.setAttribute('aria-disabled',k);b.title=k?'Seat #'+b.dataset.n+' taken':'Seat #'+b.dataset.n});
 const l=MAX-[...t].filter(n=>n>=1&&n<=MAX).length;document.querySelectorAll('.spots').forEach(e=>e.textContent=l>0?l+' of '+MAX+' spots left':'Full: all '+MAX+' spots taken')}
