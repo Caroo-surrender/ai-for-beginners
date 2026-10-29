@@ -10,9 +10,9 @@ input,textarea{width:100%;padding:.7em;border:1px solid #cbd5e1;border-radius:8p
 button{margin-top:1.2em;width:100%;background:var(--accent);color:#fff;border:0;border-radius:999px;padding:.9em;font-size:1.1em;font-weight:700}
 .foot{font-size:.85em;color:#475569}</style></head><body><main>
 <h1>Advanced AI Group</h1>
-<div class="facts"><b>Sunday, November 8, 2026</b> · 10:30 AM – 3:30 PM<br>
+<div class="facts"><b>Sunday, November 8, 2026</b> · 10:30 AM – 5:30 PM<br>
 The Lighthouse, 15606 The Gore Road, Caledon East, ON <i>(walk around back)</i><br>
-Free or by donation · Max 16 people<br>Optional catered lunch, La Focaccia: $30<br>5-min talks · 5-min Q&amp;A + an ask for help 🙌 → Lunch → Open collab<br>Hosted by AI Ninjas<br>Facilitated by Caroo</div>
+Free or by donation · Max 16 people<br>Optional catered lunch, La Focaccia: $30<br>1-hr walk → 5-min talks · 5-min Q&amp;A + an ask for help 🙌 → Lunch → Open collab<br>Hosted by AI Ninjas<br>Facilitated by Caroo</div>
 <form id="f"><label>Name<input name="name" required></label>
 <label>Email or phone<input name="contact" required></label>
 <label>Catered lunch $30 (La Focaccia)</label><div class="r"><label><input type="radio" name="lunch" value="Yes" required> Yes</label><label><input type="radio" name="lunch" value="No"> No</label></div>
@@ -25,7 +25,7 @@ Free or by donation · Max 16 people<br>Optional catered lunch, La Focaccia: $30
 const f=document.getElementById('f'),sw=document.getElementById('sw');
 f.onchange=()=>{const y=f.lunch.value==='Yes';sw.hidden=!y;f.querySelectorAll('[name=sandwich]').forEach(i=>i.required=y)};
 f.onsubmit=e=>{e.preventDefault();const d=new FormData(f),y=d.get('lunch')==='Yes';
-let body=`Event: Advanced AI Group, Sunday Nov 8, 2026, 10:30 AM – 3:30 PM\nName: ${d.get('name')}\nEmail/Phone: ${d.get('contact')}\nCatered lunch $30 (La Focaccia): ${d.get('lunch')}\nSandwich: ${y?d.get('sandwich'):'N/A'}\nDonation: Event is free or by donation\nNotes: ${d.get('notes')||''}`;
+let body=`Event: Advanced AI Group, Sunday Nov 8, 2026, 10:30 AM – 5:30 PM\nName: ${d.get('name')}\nEmail/Phone: ${d.get('contact')}\nCatered lunch $30 (La Focaccia): ${d.get('lunch')}\nSandwich: ${y?d.get('sandwich'):'N/A'}\nDonation: Event is free or by donation\nNotes: ${d.get('notes')||''}`;
 if(y)body+=`\n\nLunch payment: e-transfer $30 to quanyin144@gmail.com by Thursday, Nov 5, 2026, with "${d.get('sandwich')}" in the e-transfer note.`;
 location.href='mailto:carl.e.nissen@gmail.com?subject='+encodeURIComponent('RSVP Advanced AI Nov 8')+'&body='+encodeURIComponent(body)};
 </script></body></html>
