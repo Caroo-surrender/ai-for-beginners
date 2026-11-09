@@ -3,13 +3,12 @@
 
   var CANONICAL = "https://caroo-surrender.github.io/ai-for-beginners/december-12-2026/";
   var TO = "carl.e.nissen@gmail.com";
-  var SUBJECT = "RSVP AI Event Dec 12 2026";
+  var SUBJECT = "RSVP AI Ninjas Mastermind Dec 12 2026";
   var PRICE = "$20 per person";
-  var ACCESS = "If cost is a barrier, reach out to Caroo. We can arrange another way to contribute, such as helping with cleanup.";
+  var ACCESS = "Cost a barrier? Reach out to Caroo\u2014we can arrange another way to contribute, such as cleanup.";
   var FOOD = "Winter soup and a fruit dish. You\u2019re welcome to bring a potluck dish.";
   var BOTTLENECK = "Bring your biggest bottleneck. We\u2019ll work through it together with practical solutions and tools for your next step that day.";
-  var PAY = "Payment arrangements for the $20 per person are communicated by email after you register. No payment is collected here, and no recipient or payment method is named.";
-  var HELP_NOTE = "Bring the top current bottleneck in whatever you\u2019re working on. This is a mastermind group for practical problem-solving. Not every problem can be fully resolved in one session. Leave sensitive or business-confidential details out of this email.";
+  var PAY = "Payment details by email after registration.";
 
   function clean(value, max) {
     var text = String(value == null ? "" : value).replace(/[\r\n]+/g, " ").replace(/\s+/g, " ").trim();
@@ -34,8 +33,8 @@
     }
 
     var lines = [
-      "Event: Carl Nissen's AI Event",
-      "When: Saturday, December 12, 2026, 11:00 AM \u2013 4:00 PM America/Toronto",
+      "Event: AI Ninjas Mastermind",
+      "When: Saturday, December 12, 2026, 11 AM \u2013 4 PM Toronto time",
       "Where: Location details to be confirmed",
       "Admission: " + PRICE,
       PAY,
@@ -43,16 +42,15 @@
       FOOD,
       "Potluck (optional, not a commitment): " + (food || "Not specified"),
       "Dish (optional): " + (potluck || "None named"),
-      "A five-minute show-and-share is welcome.",
+      "Bring a five-minute show-and-share.",
       "Topic (optional): " + (share || "Not shared"),
       BOTTLENECK,
-      HELP_NOTE,
       "Bottleneck (optional): " + (bottleneck || "Not shared"),
       "Name: " + name,
       "Email or phone: " + contact,
       "People (optional): " + (party || "Not specified"),
       "Notes: " + (notes || ""),
-      "This email is the registration. This page stores nothing."
+      "Sending this email registers you. Preparing it does not."
     ];
     var body = lines.join("\n");
     var href = "mailto:" + TO + "?subject=" + encodeURIComponent(SUBJECT) + "&body=" + encodeURIComponent(body);
@@ -131,7 +129,6 @@
     FOOD: FOOD,
     BOTTLENECK: BOTTLENECK,
     PAY: PAY,
-    HELP_NOTE: HELP_NOTE,
     buildRegistration: buildRegistration
   };
 

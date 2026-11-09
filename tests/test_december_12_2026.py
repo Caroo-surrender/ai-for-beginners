@@ -14,13 +14,13 @@ from pypdf import PdfReader
 ROOT = Path(__file__).resolve().parents[1]
 EVENT = ROOT / "december-12-2026"
 CANONICAL = "https://caroo-surrender.github.io/ai-for-beginners/december-12-2026/"
-SUBJECT = "RSVP AI Event Dec 12 2026"
+SUBJECT = "RSVP AI Ninjas Mastermind Dec 12 2026"
 PRICE = "$20 per person"
-ACCESS = "If cost is a barrier, reach out to Caroo. We can arrange another way to contribute, such as helping with cleanup."
+ACCESS = "Cost a barrier? Reach out to Caroo\u2014we can arrange another way to contribute, such as cleanup."
 FOOD = "Winter soup and a fruit dish. You\u2019re welcome to bring a potluck dish."
 BOTTLENECK = "Bring your biggest bottleneck. We\u2019ll work through it together with practical solutions and tools for your next step that day."
-PAY = "Payment arrangements for the $20 per person are communicated by email after you register. No payment is collected here, and no recipient or payment method is named."
-QUALIFIER = "Bring the top current bottleneck in whatever you\u2019re working on. This is a mastermind group for practical problem-solving. Not every problem can be fully resolved in one session. Leave sensitive or business-confidential details out of this email."
+PAY = "Payment details by email after registration."
+READABLE_URL = "caroo-surrender.github.io/ai-for-beginners/december-12-2026"
 NODE = "/exec-daemon/node"
 
 BANNED = [
@@ -124,11 +124,11 @@ class DecemberEventTest(unittest.TestCase):
         for label, text in (("page", self.page), ("flyer", self.flyer), ("pdf", self.pdf_text)):
             for fact in (
                 "Saturday, December 12, 2026",
-                "11:00 AM",
-                "4:00 PM",
-                "America/Toronto",
+                "11 AM",
+                "4 PM",
+                "Toronto time",
                 "Location details to be confirmed",
-                "Hosted by AI Ninjas",
+                "AI Ninjas Mastermind",
                 "Facilitated by Caroo",
                 "five-minute show-and-share",
                 PRICE,
@@ -136,12 +136,23 @@ class DecemberEventTest(unittest.TestCase):
                 FOOD,
                 BOTTLENECK,
                 PAY,
-                QUALIFIER,
-                CANONICAL,
-                SUBJECT,
-                "carl.e.nissen@gmail.com",
+                READABLE_URL,
             ):
                 self.assertIn(fact, text, f"{fact!r} missing from {label}")
+        self.assertIn(CANONICAL, (EVENT / "flyer" / "flyer.html").read_text(encoding="utf-8"))
+        self.assertIn(CANONICAL, (EVENT / "index.html").read_text(encoding="utf-8"))
+        self.assertIn(SUBJECT, self.page)
+        self.assertIn("You are registered only after you press Send", self.page)
+        self.assertIn("sensitive or business-confidential", self.page)
+        for leaked in (
+            "no recipient or payment method is named",
+            "fixed timetable",
+            "reach the hosts",
+            "business-confidential",
+            "Not every problem can be fully resolved",
+        ):
+            self.assertNotIn(leaked, self.flyer)
+            self.assertNotIn(leaked, self.pdf_text)
 
     def test_removed_wording_is_absent(self):
         for pattern in BANNED:
@@ -163,7 +174,7 @@ class DecemberEventTest(unittest.TestCase):
         self.assertIn('name="contact" required', html)
         for optional in ("party", "food", "potluck", "share", "bottleneck", "notes"):
             self.assertNotRegex(html, rf'name="{optional}"[^>]*required')
-        self.assertIn("This page does not save your registration and does not keep a participant list.", self.page)
+        self.assertIn("Preparing this email does not register you.", self.page)
         self.assertIn("not a commitment", self.page.lower())
         self.assertIn('href="flyer/flyer-letter.pdf"', html)
         self.assertIn(f'href="{CANONICAL}"', html)
@@ -229,7 +240,7 @@ process.stdout.write(JSON.stringify(out));
         data = json.loads(result.stdout)
         self.assertEqual(data["subject"], SUBJECT)
         self.assertEqual(data["to"], "carl.e.nissen@gmail.com")
-        for fact in (PRICE, ACCESS, FOOD, BOTTLENECK, PAY, QUALIFIER, "Sample Guest", "bread", "five-minute show-and-share"):
+        for fact in (PRICE, ACCESS, FOOD, BOTTLENECK, PAY, "Sample Guest", "bread", "five-minute show-and-share", "Sending this email registers you."):
             self.assertIn(fact, data["body"])
         for pattern in BANNED:
             self.assertIsNone(re.search(pattern, data["body"], flags=re.I))
