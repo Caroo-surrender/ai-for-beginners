@@ -24,10 +24,12 @@ h1{font-size:46pt;line-height:.88;font-weight:800;margin:.06in 0 .02in;letter-sp
 .where{font-size:14pt;margin-top:.04in}
 .early{font-size:13pt;font-weight:800;line-height:1.25;margin-top:.06in}
 .early a{color:#145c38}
-.shot{margin-top:.08in}
-.shot img{width:100%;height:1.42in;object-fit:cover;object-position:center 42%;border-radius:12px;display:block}
-.shot figcaption{font-size:11pt;font-weight:800;color:#145c38;margin-top:.03in}
-.price{align-self:flex-start;background:#145c38;color:#fff;border-radius:18px 22px 16px 20px;padding:.1in .2in .12in;margin:.12in 0 .08in;transform:rotate(-1.4deg);box-shadow:3px 4px 0 rgba(36,28,22,.12)}
+.mast{display:flex;gap:.22in;align-items:flex-start}
+.lead{flex:1 1 auto;min-width:0}
+.shot{flex:0 0 3.15in;width:3.15in;margin:.02in 0 0}
+.shot img{width:3.15in;height:auto;object-fit:contain;border-radius:12px;display:block}
+.shot figcaption{font-size:11pt;font-weight:800;color:#145c38;margin-top:.05in;line-height:1.15}
+.price{display:inline-block;background:#145c38;color:#fff;border-radius:18px 22px 16px 20px;padding:.1in .2in .12in;margin:.12in 0 .08in;transform:rotate(-1.4deg);box-shadow:3px 4px 0 rgba(36,28,22,.12)}
 .price .lead{display:block;font-size:11pt;font-weight:800}
 .price .amount{display:block;font-size:38pt;font-weight:800;letter-spacing:-.03em;line-height:.88}
 .price .unit{display:block;font-size:14pt;font-weight:800}
@@ -47,6 +49,8 @@ h1{font-size:46pt;line-height:.88;font-weight:800;margin:.06in 0 .02in;letter-sp
 </head>
 <body>
 <div class="sheet">
+<div class="mast">
+<div class="lead">
 <p class="script">you’re invited</p>
 <p class="hosts">Facilitated by Caroo</p>
 <h1>AI Ninjas<br>Mastermind</h1>
@@ -54,12 +58,14 @@ h1{font-size:46pt;line-height:.88;font-weight:800;margin:.06in 0 .02in;letter-sp
 <p class="when">Saturday, December 12, 2026</p>
 <p class="when">11 AM – 4 PM Toronto time</p>
 <p class="where">Location details to be confirmed</p>
-<p class="early"><a href="https://caroo-surrender.github.io/ai-for-beginners/december-11-2026/">Come early: house party the night before, Fri Dec 11</a></p>
+<p class="price"><span class="amount">$20</span> <span class="unit">per person</span></p>
+</div>
 <figure class="shot">
 <img src="group.jpg" width="1200" height="900" alt="People gathered around tables with laptops.">
 <figcaption>Our last mastermind</figcaption>
 </figure>
-<p class="price"><span class="amount">$20</span> <span class="unit">per person</span></p>
+</div>
+<p class="early"><a href="https://caroo-surrender.github.io/ai-for-beginners/december-11-2026/">Come early: house party the night before, Fri Dec 11</a></p>
 <p class="stack">Cost a barrier? Reach out to Caroo—we can arrange another way to contribute, such as cleanup.</p>
 <p class="stack"><strong>Winter soup and a fruit dish. You’re welcome to bring a potluck dish.</strong></p>
 <p class="stack">Bring a five-minute show-and-share.</p>
