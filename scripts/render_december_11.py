@@ -146,15 +146,19 @@ async def render_all(ws_url, review_dir):
                     "expression": """
 (() => {
   const imgs = [...document.images];
-  const url = document.querySelector('.url').getBoundingClientRect();
-  const qr = document.querySelector('.qr img').getBoundingClientRect();
+  const pages = [...document.querySelectorAll('.sheet')].map(sheet => {
+    const sr = sheet.getBoundingClientRect();
+    const url = sheet.querySelector('.url').getBoundingClientRect();
+    const qr = sheet.querySelector('.qr img').getBoundingClientRect();
+    return {
+      h: sr.height,
+      urlInside: url.bottom <= sr.bottom + 2 && url.top >= sr.top - 1,
+      qrWidth: qr.width
+    };
+  });
   return {
     imgs: imgs.map(img => ({src: img.currentSrc.split('/').pop(), ok: img.complete && img.naturalWidth > 0})),
-    urlBottom: url.bottom,
-    urlTop: url.top,
-    qrWidth: qr.width,
-    bodyHeight: document.body.getBoundingClientRect().height,
-    scrollWidth: document.documentElement.scrollWidth
+    pages
   };
 })()
 """,
@@ -165,12 +169,21 @@ async def render_all(ws_url, review_dir):
             (review_dir / "flyer-fit.json").write_text(json.dumps(info, indent=2), encoding="utf-8")
             if not all(item["ok"] for item in info["imgs"]):
                 raise RuntimeError(f"Flyer image failed to load: {info['imgs']}")
-            if info["urlBottom"] > info["bodyHeight"] + 1:
-                raise RuntimeError(f"Flyer URL is clipped: {info}")
-            if info["qrWidth"] < 120:
-                raise RuntimeError(f"QR is too small: {info}")
-            await shoot(cdp, 816, 1056, 2, FLYER / "flyer-letter.png")
+            for page in info.get("pages") or []:
+                if not page["urlInside"]:
+                    raise RuntimeError(f"Flyer URL is clipped: {info}")
+                if page["qrWidth"] < 120:
+                    raise RuntimeError(f"QR is too small: {info}")
             await print_pdf(cdp, FLYER / "flyer-letter.pdf")
+            subprocess.check_call(
+                ["pdftoppm", "-r", "170", "-png", str(FLYER / "flyer-letter.pdf"), str(review_dir / "page")]
+            )
+            first = review_dir / "page-1.png"
+            second = review_dir / "page-2.png"
+            if not first.exists() or not second.exists():
+                raise RuntimeError("Expected a 2-page flyer PDF")
+            (FLYER / "flyer-letter.png").write_bytes(first.read_bytes())
+            (FLYER / "flyer-letter-page2.png").write_bytes(second.read_bytes())
 
             await open_page(cdp, PAGE.resolve().as_uri())
             await shoot(cdp, 390, 844, 2, review_dir / "page-mobile.png", full=True)
@@ -186,6 +199,9 @@ async def render_all(ws_url, review_dir):
   form.email.value = 'guest@example.com';
   form.guests.value = '2';
   form.dish.value = 'Vegetables';
+  form.sleep.value = 'Yes, sleeping over';
+  form.staying.value = '2';
+  form.mastermind.value = 'Yes';
   form.requestSubmit();
   const link = document.getElementById('mail-open');
   return {
