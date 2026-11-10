@@ -35,7 +35,7 @@
     var lines = [
       "Event: AI Ninjas Mastermind",
       "When: Saturday, December 5, 2026, 11 AM \u2013 4 PM Toronto time",
-      "Where: Location details to be confirmed",
+      "Where: 15606 The Gore Rd, Caledon East, ON L7C 3E5",
       "Admission: " + PRICE,
       PAY,
       ACCESS,
