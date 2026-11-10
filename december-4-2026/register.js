@@ -46,7 +46,7 @@
       "Event: House party",
       "Free head count.",
       "When: Friday, December 4, 2026. Time to be confirmed.",
-      "Where: Same address as the December 5 AI event. Address to be confirmed.",
+      "Where: 15606 The Gore Rd, Caledon East, ON L7C 3E5.",
       "The next day: AI Ninjas Mastermind, Saturday, December 5, 2026, 11 AM\u20134 PM, $20.",
       "Live DJ.",
       "Potluck: " + dish,

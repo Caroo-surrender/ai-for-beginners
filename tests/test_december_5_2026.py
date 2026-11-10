@@ -128,7 +128,7 @@ class DecemberEventTest(unittest.TestCase):
                 "11 AM",
                 "4 PM",
                 "Toronto time",
-                "Location details to be confirmed",
+                "15606 The Gore Rd, Caledon East, ON L7C 3E5",
                 "AI Ninjas Mastermind",
                 "Facilitated by Caroo",
                 "five-minute show-and-share",
