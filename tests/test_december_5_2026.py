@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Checks for the December 12, 2026 event page, email registration, and flyer."""
+"""Checks for the December 5, 2026 event page, email registration, and flyer."""
 
 import json
 import re
@@ -12,15 +12,15 @@ from PIL import Image, ImageDraw
 from pypdf import PdfReader
 
 ROOT = Path(__file__).resolve().parents[1]
-EVENT = ROOT / "december-12-2026"
-CANONICAL = "https://caroo-surrender.github.io/ai-for-beginners/december-12-2026/"
-SUBJECT = "RSVP AI Ninjas Mastermind Dec 12 2026"
+EVENT = ROOT / "december-5-2026"
+CANONICAL = "https://caroo-surrender.github.io/ai-for-beginners/december-5-2026/"
+SUBJECT = "RSVP AI Ninjas Mastermind Dec 5 2026"
 PRICE = "$20 per person"
 ACCESS = "Cost a barrier? Reach out to Caroo\u2014we can arrange another way to contribute, such as cleanup."
 FOOD = "Winter soup and a fruit dish. You\u2019re welcome to bring a potluck dish."
 BOTTLENECK = "Bring your biggest bottleneck. We\u2019ll work through it together with practical solutions and tools for your next step that day."
 PAY = "Payment details by email after registration."
-READABLE_URL = "caroo-surrender.github.io/ai-for-beginners/december-12-2026"
+READABLE_URL = "caroo-surrender.github.io/ai-for-beginners/december-5-2026"
 NODE = "/exec-daemon/node"
 
 BANNED = [
@@ -108,7 +108,7 @@ class DecemberEventTest(unittest.TestCase):
 
     def test_historical_files_untouched(self):
         result = subprocess.run(
-            ["git", "diff", "--exit-code", "main", "--", "index.html", "advanced"],
+            ["git", "diff", "--exit-code", "main", "--", "advanced"],
             cwd=ROOT,
             capture_output=True,
             text=True,
@@ -118,12 +118,13 @@ class DecemberEventTest(unittest.TestCase):
         self.assertIn("Sunday, November 8, 2026", advanced)
         self.assertIn("RSVP Advanced AI Nov 8", advanced)
         root = (ROOT / "index.html").read_text(encoding="utf-8")
-        self.assertIn("./advanced/", root)
+        self.assertIn("./december-4-2026/", root)
+        self.assertIn("./december-5-2026/", root)
 
     def test_required_facts_on_page_flyer_and_pdf(self):
         for label, text in (("page", self.page), ("flyer", self.flyer), ("pdf", self.pdf_text)):
             for fact in (
-                "Saturday, December 12, 2026",
+                "Saturday, December 5, 2026",
                 "11 AM",
                 "4 PM",
                 "Toronto time",

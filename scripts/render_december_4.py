@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Build the December 11 house-party QR code, printable PDF, and PNG flyer.
+"""Build the December 4 house-party QR code, printable PDF, and PNG flyer.
 
 Uses segno for the QR code and headless Chrome for the HTML flyer.
 No paid image service. Re-run from the repo root:
 
-    python3 scripts/render_december_11.py
+    python3 scripts/render_december_4.py
 """
 
 import asyncio
@@ -22,9 +22,9 @@ import segno
 import websockets
 
 ROOT = Path(__file__).resolve().parents[1]
-FLYER = ROOT / "december-11-2026" / "flyer"
-PAGE = ROOT / "december-11-2026" / "index.html"
-URL = "https://caroo-surrender.github.io/ai-for-beginners/december-11-2026/"
+FLYER = ROOT / "december-4-2026" / "flyer"
+PAGE = ROOT / "december-4-2026" / "index.html"
+URL = "https://caroo-surrender.github.io/ai-for-beginners/december-4-2026/"
 CHROME = shutil.which("google-chrome") or shutil.which("google-chrome-stable")
 
 
@@ -229,9 +229,9 @@ async def render_all(ws_url, review_dir):
 def main():
     if not CHROME:
         raise SystemExit("google-chrome is required")
-    review = Path(tempfile.mkdtemp(prefix="dec11-review-"))
+    review = Path(tempfile.mkdtemp(prefix="dec4-review-"))
     make_qr()
-    profile = tempfile.mkdtemp(prefix="chrome-dec11-")
+    profile = tempfile.mkdtemp(prefix="chrome-dec4-")
     proc = subprocess.Popen(
         [
             CHROME,
