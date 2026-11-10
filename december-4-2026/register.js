@@ -1,10 +1,10 @@
 (function (root) {
   "use strict";
 
-  var CANONICAL = "https://caroo-surrender.github.io/ai-for-beginners/december-11-2026/";
+  var CANONICAL = "https://caroo-surrender.github.io/ai-for-beginners/december-4-2026/";
   var TO = "carl.e.nissen@gmail.com";
-  var SUBJECT = "RSVP House Party Dec 11 2026";
-  var SUBJECT_BOTH = "RSVP House Party Dec 11 + AI Ninjas Mastermind Dec 12 2026";
+  var SUBJECT = "RSVP House Party Dec 4 2026";
+  var SUBJECT_BOTH = "RSVP House Party Dec 4 + AI Ninjas Mastermind Dec 5 2026";
   var DISHES = ["Chicken", "Beef", "Lamb", "Soups", "Vegetables"];
   var SLEEP = ["Yes, sleeping over", "No, going home", "Not sure yet"];
   var MASTERMIND = ["Yes", "No", "Maybe"];
@@ -45,9 +45,9 @@
     var lines = [
       "Event: House party",
       "Free head count.",
-      "When: Friday, December 11, 2026. Time to be confirmed.",
-      "Where: Same address as the December 12 AI event. Address to be confirmed.",
-      "The next day: AI Ninjas Mastermind, Saturday, December 12, 2026, 11 AM\u20134 PM, $20.",
+      "When: Friday, December 4, 2026. Time to be confirmed.",
+      "Where: Same address as the December 5 AI event. Address to be confirmed.",
+      "The next day: AI Ninjas Mastermind, Saturday, December 5, 2026, 11 AM\u20134 PM, $20.",
       "Live DJ.",
       "Potluck: " + dish,
       "Ovens, stove, and smoker available on site.",
@@ -55,7 +55,7 @@
       "Sleepover spots are limited.",
       "Sleeping over: " + sleep,
       "People in your group staying: " + stayingLine,
-      "Staying for the AI Ninjas Mastermind on Sat Dec 12 (11 AM-4 PM, $20): " + mastermind,
+      "Staying for the AI Ninjas Mastermind on Sat Dec 5 (11 AM-4 PM, $20): " + mastermind,
       "Name: " + name,
       "Email: " + email,
       "Guests, including you: " + guests,

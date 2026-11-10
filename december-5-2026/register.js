@@ -1,9 +1,9 @@
 (function (root) {
   "use strict";
 
-  var CANONICAL = "https://caroo-surrender.github.io/ai-for-beginners/december-12-2026/";
+  var CANONICAL = "https://caroo-surrender.github.io/ai-for-beginners/december-5-2026/";
   var TO = "carl.e.nissen@gmail.com";
-  var SUBJECT = "RSVP AI Ninjas Mastermind Dec 12 2026";
+  var SUBJECT = "RSVP AI Ninjas Mastermind Dec 5 2026";
   var PRICE = "$20 per person";
   var ACCESS = "Cost a barrier? Reach out to Caroo\u2014we can arrange another way to contribute, such as cleanup.";
   var FOOD = "Winter soup and a fruit dish. You\u2019re welcome to bring a potluck dish.";
@@ -34,7 +34,7 @@
 
     var lines = [
       "Event: AI Ninjas Mastermind",
-      "When: Saturday, December 12, 2026, 11 AM \u2013 4 PM Toronto time",
+      "When: Saturday, December 5, 2026, 11 AM \u2013 4 PM Toronto time",
       "Where: Location details to be confirmed",
       "Admission: " + PRICE,
       PAY,
