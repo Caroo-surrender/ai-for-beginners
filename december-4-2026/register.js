@@ -8,6 +8,7 @@
   var DISHES = ["Chicken", "Beef", "Lamb", "Soups", "Vegetables"];
   var SLEEP = ["Yes, sleeping over", "No, going home", "Not sure yet"];
   var MASTERMIND = ["Yes", "No", "Maybe"];
+  var SANDWICHES = ["None", "Chicken Parm", "Mortadella", "Vegetarian/Vegan"];
 
   function clean(value, max) {
     var text = String(value == null ? "" : value).replace(/[\r\n]+/g, " ").replace(/\s+/g, " ").trim();
@@ -23,6 +24,7 @@
     var sleep = clean(input.sleep, 24);
     var staying = clean(input.staying, 3);
     var mastermind = clean(input.mastermind, 8);
+    var sandwich = clean(input.sandwich, 20);
 
     if (!name) return { error: "Enter your name." };
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return { error: "Enter your email." };
@@ -37,6 +39,9 @@
     if (MASTERMIND.indexOf(mastermind) === -1) {
       return { error: "Say whether you are staying for the AI Ninjas Mastermind." };
     }
+    if (sandwich && SANDWICHES.indexOf(sandwich) === -1) {
+      return { error: "Choose a sandwich, or leave that blank." };
+    }
 
     var subject = mastermind === "Yes" ? SUBJECT_BOTH : SUBJECT;
     var stayingLine = sleep === "Yes, sleeping over"
@@ -45,9 +50,9 @@
     var lines = [
       "Event: House party",
       "Free head count.",
-      "When: Friday, December 4, 2026. Time to be confirmed.",
+      "When: Friday, December 4, 2026. From 2 PM. Show up anytime after.",
       "Where: 15606 The Gore Rd, Caledon East, ON L7C 3E5.",
-      "The next day: AI Ninjas Mastermind, Saturday, December 5, 2026, 11 AM\u20134 PM, $20.",
+      "The next day: AI Ninjas Mastermind, Saturday, December 5, 2026, 10 AM\u20134 PM, $20.",
       "Live DJ.",
       "Potluck: " + dish,
       "Ovens, stove, and smoker available on site.",
@@ -55,12 +60,14 @@
       "Sleepover spots are limited.",
       "Sleeping over: " + sleep,
       "People in your group staying: " + stayingLine,
-      "Staying for the AI Ninjas Mastermind on Sat Dec 5 (11 AM-4 PM, $20): " + mastermind,
+      "Staying for the AI Ninjas Mastermind on Sat Dec 5 (10 AM-4 PM, $20): " + mastermind,
+      "Sandwich: " + (sandwich || "None"),
+      sandwich && sandwich !== "None" ? "Lunch payment: e-transfer $30 to quanyin144@gmail.com by Wednesday Dec 2, with " + sandwich + " in the note." : "",
       "Name: " + name,
       "Email: " + email,
       "Guests, including you: " + guests,
       "Sending this email counts you. Preparing it does not."
-    ];
+    ].filter(function (line) { return line; });
     var body = lines.join("\n");
     var href = "mailto:" + TO + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
     return {

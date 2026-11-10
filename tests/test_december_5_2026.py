@@ -30,7 +30,6 @@ BANNED = [
     r"\bUSD\b",
     r"\bCAD\b",
     r"\bdollars?\b",
-    r"e-transfer",
     r"etransfer",
     r"paypal",
     r"venmo",
@@ -45,13 +44,9 @@ BANNED = [
     r"\bdiscount\b",
     r"\bmenu\b",
     r"\bgluten\b",
-    r"\bvegan\b",
-    r"\bvegetarian\b",
     r"\ballergen",
     r"\bdietary\b",
     r"food option",
-    r"La Focaccia",
-    r"quanyin",
     r"Lighthouse",
     r"Gore Road",
     r"November",
@@ -60,7 +55,6 @@ BANNED = [
     r"Oct 25",
     r"10:30",
     r"5:30",
-    r"\$30",
     r"\$33",
     r"16 people",
     r"16 seats",
@@ -68,9 +62,7 @@ BANNED = [
     r"Advanced AI Group",
     r"AI for Beginners",
     r"\bTBD\b",
-    r"sandwich",
-    r"Chicken Parm",
-    r"Mortadella",
+    r"Mortadella Pesto",
 ]
 
 
@@ -125,7 +117,7 @@ class DecemberEventTest(unittest.TestCase):
         for label, text in (("page", self.page), ("flyer", self.flyer), ("pdf", self.pdf_text)):
             for fact in (
                 "Saturday, December 5, 2026",
-                "11 AM",
+                "10 AM",
                 "4 PM",
                 "Toronto time",
                 "15606 The Gore Rd, Caledon East, ON L7C 3E5",

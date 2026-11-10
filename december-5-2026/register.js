@@ -25,16 +25,21 @@
     var share = clean(input.share, 36);
     var bottleneck = clean(input.bottleneck, 48);
     var notes = clean(input.notes, 20);
+    var sandwich = clean(input.sandwich, 20);
+    var SANDWICHES = ["None", "Chicken Parm", "Mortadella", "Vegetarian/Vegan"];
 
     if (!name) return { error: "Enter your name." };
     if (!contact) return { error: "Enter an email or phone number." };
     if (party && !/^[1-9]\d{0,2}$/.test(party)) {
       return { error: "Enter a whole number of people, or leave that field blank." };
     }
+    if (sandwich && SANDWICHES.indexOf(sandwich) === -1) {
+      return { error: "Choose a sandwich, or leave that blank." };
+    }
 
     var lines = [
       "Event: AI Ninjas Mastermind",
-      "When: Saturday, December 5, 2026, 11 AM \u2013 4 PM Toronto time",
+      "When: Saturday, December 5, 2026, 10 AM \u2013 4 PM Toronto time",
       "Where: 15606 The Gore Rd, Caledon East, ON L7C 3E5",
       "Admission: " + PRICE,
       PAY,
@@ -42,6 +47,8 @@
       FOOD,
       "Potluck (optional, not a commitment): " + (food || "Not specified"),
       "Dish (optional): " + (potluck || "None named"),
+      "Sandwich: " + (sandwich || "None"),
+      sandwich && sandwich !== "None" ? "Lunch payment: e-transfer $30 to quanyin144@gmail.com by Wednesday Dec 2, with " + sandwich + " in the note." : "",
       "Bring a five-minute show-and-share.",
       "Topic (optional): " + (share || "Not shared"),
       BOTTLENECK,
@@ -51,7 +58,7 @@
       "People (optional): " + (party || "Not specified"),
       "Notes: " + (notes || ""),
       "Sending this email registers you. Preparing it does not."
-    ];
+    ].filter(function (line) { return line; });
     var body = lines.join("\n");
     var href = "mailto:" + TO + "?subject=" + encodeURIComponent(SUBJECT) + "&body=" + encodeURIComponent(body);
     return {
