@@ -58,7 +58,7 @@ class EhfLevel1Test(unittest.TestCase):
             "EHF Level 1 Certification Course",
             "Caroo",
             "January 2027, date to be confirmed",
-            "Caledon East, ON (location to be confirmed)",
+            "The Light House, 15606 The Gore Rd, Caledon East, ON L7C 3E5",
             "$444",
             "CAD",
             "Last time at this price",
@@ -75,7 +75,7 @@ class EhfLevel1Test(unittest.TestCase):
             "Complete the Quan Yin Virtual Classes (online) first.",
             "Potluck lunch: please bring a dish to share.",
             "Sleeping arrangements",
-            "Details coming soon (TBD).",
+            "Overnight stays available at The Light House: $100 per night, breakfast included. Let us know in the form if you'd like to stay.",
             "Online payment is being set up. We'll confirm your spot and send payment details after you register.",
             "EHF Holistic Services Canada Inc.",
             "https://ehfpath.com",
@@ -103,7 +103,14 @@ class EhfLevel1Test(unittest.TestCase):
         self.assertIn('src="img/caroo.jpg"', self.html)
         self.assertIn('src="img/class.webp"', self.html)
         self.assertIsNone(re.search(r"January\s+(?:[1-9]|[12]\d|3[01])\b", self.html))
-        self.assertEqual(self.page.count("(TBD)"), 1)
+        self.assertNotIn("location to be confirmed", self.html)
+        self.assertNotIn("location to be confirmed", self.script)
+        self.assertNotIn("Details coming soon", self.html)
+        self.assertEqual(self.page.count("(TBD)"), 0)
+        self.assertIn(
+            "https://www.google.com/maps/search/?api=1&amp;query=The+Light+House+15606+The+Gore+Rd+Caledon+East+ON+L7C+3E5",
+            self.html,
+        )
 
     def test_banned_words(self):
         blob = self.html + "\n" + self.script
@@ -128,6 +135,10 @@ class EhfLevel1Test(unittest.TestCase):
         self.assertIn('name="phone"', self.html)
         self.assertIn('name="city"', self.html)
         self.assertIn('name="questions"', self.html)
+        self.assertIn('name="overnight" value="No" required', self.html)
+        self.assertIn('name="overnight" value="1 night"', self.html)
+        self.assertIn('name="overnight" value="2 nights"', self.html)
+        self.assertIn("Overnight stay?", self.page)
         for value in (
             "First time ($444)",
             "2nd ($222, 50% off)",
@@ -155,6 +166,7 @@ const built = context.EhfLevel1.buildRegistration({
   phone: '(905) 555-0100',
   city: 'Caledon East',
   attendance: '4th ($55)',
+  overnight: '1 night',
   questions: 'Is there parking?'
 });
 const packed = context.EhfLevel1.buildRegistration({
@@ -163,6 +175,7 @@ const packed = context.EhfLevel1.buildRegistration({
   phone: '+1 416 555 0199',
   city: 'C'.repeat(80),
   attendance: '5th+ (by donation)',
+  overnight: '2 nights',
   questions: 'Q'.repeat(400)
 });
 const bad = context.EhfLevel1.buildRegistration({
@@ -170,7 +183,8 @@ const bad = context.EhfLevel1.buildRegistration({
   email: 'ada@example.com',
   phone: '123',
   city: 'Toronto',
-  attendance: 'First time ($444)'
+  attendance: 'First time ($444)',
+  overnight: 'No'
 });
 if (built.error) process.exit(2);
 const href = new URL(built.href);
@@ -199,6 +213,8 @@ process.stdout.write(JSON.stringify(out));
             "(905) 555-0100",
             "Caledon East",
             "4th ($55)",
+            "Overnight stay: 1 night",
+            "The Light House, 15606 The Gore Rd, Caledon East, ON L7C 3E5",
             "Is there parking?",
             "January 2027, date to be confirmed",
             "Sending this email registers you. Preparing it does not.",
