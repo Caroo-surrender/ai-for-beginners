@@ -11,6 +11,7 @@
     "4th ($55)",
     "5th+ (by donation)"
   ];
+  var OVERNIGHT = ["No", "1 night", "2 nights"];
 
   function clean(value, max) {
     var text = String(value == null ? "" : value).replace(/[\r\n]+/g, " ").replace(/\s+/g, " ").trim();
@@ -28,6 +29,7 @@
     var phone = clean(input.phone, 32);
     var city = clean(input.city, 48);
     var attendance = clean(input.attendance, 40);
+    var overnight = clean(input.overnight, 12);
     var questions = clean(input.questions, 200);
 
     if (!name) return { error: "Enter your full name." };
@@ -38,17 +40,21 @@
     if (ATTENDANCE.indexOf(attendance) === -1) {
       return { error: "Choose first time, 2nd, 3rd, 4th, or 5th+." };
     }
+    if (OVERNIGHT.indexOf(overnight) === -1) {
+      return { error: "Choose No, 1 night, or 2 nights for the overnight stay." };
+    }
 
     var lines = [
       "Course: EHF Level 1 Certification Course",
       "Facilitator: Caroo",
       "When: January 2027, date to be confirmed",
-      "Where: Caledon East, ON (location to be confirmed)",
+      "Where: The Light House, 15606 The Gore Rd, Caledon East, ON L7C 3E5",
       "Name: " + name,
       "Email: " + email,
       "Phone: " + phone,
       "Town/city: " + city,
       "Attendance: " + attendance,
+      "Overnight stay: " + overnight,
       "Questions: " + (questions || "None"),
       "Payment: Online payment is being set up. We'll confirm your spot and send payment details after you register.",
       "Sending this email registers you. Preparing it does not."
@@ -125,6 +131,7 @@
     TO: TO,
     SUBJECT: SUBJECT,
     ATTENDANCE: ATTENDANCE,
+    OVERNIGHT: OVERNIGHT,
     buildRegistration: buildRegistration
   };
 
