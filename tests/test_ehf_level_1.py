@@ -71,7 +71,7 @@ class EhfLevel1Test(unittest.TestCase):
             "$55",
             "5th time and beyond",
             "by donation",
-            "Small class: 12 paying spots (new students and repeaters), plus 2 teachers.",
+            "12 maximum, any combination of 12 total paying people.",
             "Complete the Quan Yin Virtual Classes (online) first.",
             "Potluck lunch: please bring a dish to share.",
             "Sleeping arrangements",
@@ -108,6 +108,11 @@ class EhfLevel1Test(unittest.TestCase):
         self.assertNotIn("Details coming soon", self.html)
         self.assertNotIn("Limited to 12", self.html)
         self.assertNotIn("10 spots for new students", self.html)
+        self.assertNotIn("2 teachers", self.html)
+        self.assertNotIn("paying spots", self.html)
+        self.assertIsNone(re.search(r"AI for Beginners", self.html, flags=re.I))
+        self.assertIsNone(re.search(r"AI for Beginners", self.script, flags=re.I))
+        self.assertIn('property="og:title" content="EHF Level 1"', self.html)
         self.assertEqual(self.page.count("(TBD)"), 0)
         self.assertIn(
             "https://www.google.com/maps/search/?api=1&amp;query=The+Light+House+15606+The+Gore+Rd+Caledon+East+ON+L7C+3E5",
