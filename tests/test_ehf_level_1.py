@@ -12,8 +12,8 @@ from PIL import Image
 ROOT = Path(__file__).resolve().parents[1]
 PAGE = ROOT / "ehf-level-1"
 CANONICAL = "https://caroo-surrender.github.io/ai-for-beginners/ehf-level-1/"
-SUBJECT = "Register EHF Level 1 January 2027"
-TO = "carl.e.nissen@gmail.com"
+SUBJECT = "Register EHF Level 1 January 16-17 2027"
+TO = "quanyin144@gmail.com"
 NODE = "/exec-daemon/node"
 OLD_SUBHEAD = "A 2-day hands-on introduction to EHF energy work"
 
@@ -57,26 +57,30 @@ class EhfLevel1Test(unittest.TestCase):
             "EHF Level 1",
             "EHF Level 1 Certification Course",
             "Caroo",
-            "January 2027, date to be confirmed",
+            "Saturday, January 16 and Sunday, January 17, 2027",
+            "9 AM–4 PM both days",
             "The Light House, 15606 The Gore Rd, Caledon East, ON L7C 3E5",
             "$444",
             "CAD",
+            "plus HST",
             "Last time at this price",
             "1st time",
             "2nd time",
-            "50% off ($222)",
+            "$222 + HST",
             "3rd time",
-            "$111",
+            "$111 + HST",
             "4th time",
-            "$55",
+            "$55 + HST",
             "5th time and beyond",
             "by donation",
-            "12 maximum, any combination of 12 total paying people.",
-            "Complete the Quan Yin Virtual Classes (online) first.",
-            "Potluck lunch: please bring a dish to share.",
+            "Limited to 12 spaces.",
+            "A 50% deposit holds your spot.",
+            "Complete the Quan Yin Virtual Class (online) first.",
+            "Potluck lunch",
+            "first names only",
             "Sleeping arrangements",
-            "Overnight stays available at The Light House: $100 per night, breakfast included. Let us know in the form if you'd like to stay.",
-            "Online payment is being set up. We'll confirm your spot and send payment details after you register.",
+            "Optional overnight stay at The Light House: $100 per night, breakfast included.",
+            "quanyin144@gmail.com",
             "EHF Holistic Services Canada Inc.",
             "https://ehfpath.com",
             SUBJECT,
@@ -102,14 +106,22 @@ class EhfLevel1Test(unittest.TestCase):
         self.assertIn('src="img/logo.png"', self.html)
         self.assertIn('src="img/caroo.jpg"', self.html)
         self.assertIn('src="img/class.webp"', self.html)
-        self.assertIsNone(re.search(r"January\s+(?:[1-9]|[12]\d|3[01])\b", self.html))
+        self.assertIn("January 16", self.page)
+        self.assertIn("January 17", self.page)
+        self.assertNotIn("date to be confirmed", self.html)
         self.assertNotIn("location to be confirmed", self.html)
         self.assertNotIn("location to be confirmed", self.script)
         self.assertNotIn("Details coming soon", self.html)
-        self.assertNotIn("Limited to 12", self.html)
         self.assertNotIn("10 spots for new students", self.html)
         self.assertNotIn("2 teachers", self.html)
         self.assertNotIn("paying spots", self.html)
+        self.assertNotIn("date to be confirmed", self.script)
+        config = (PAGE / "config.js").read_text(encoding="utf-8")
+        self.assertIn('EHF_ENDPOINT = ""', config)
+        script_gs = (PAGE / "apps-script" / "Code.gs").read_text(encoding="utf-8")
+        self.assertIn(TO, script_gs)
+        self.assertIn("CAPACITY = 12", script_gs)
+        self.assertIn("MailApp.sendEmail", script_gs)
         self.assertIsNone(re.search(r"AI for Beginners", self.html, flags=re.I))
         self.assertIsNone(re.search(r"AI for Beginners", self.script, flags=re.I))
         self.assertIn('property="og:title" content="EHF Level 1"', self.html)
@@ -140,24 +152,27 @@ class EhfLevel1Test(unittest.TestCase):
         self.assertIn('name="email"', self.html)
         self.assertIn('type="email"', self.html)
         self.assertIn('name="phone"', self.html)
-        self.assertIn('name="city"', self.html)
-        self.assertIn('name="questions"', self.html)
-        self.assertIn('name="overnight" value="No" required', self.html)
-        self.assertIn('name="overnight" value="1 night"', self.html)
-        self.assertIn('name="overnight" value="2 nights"', self.html)
-        self.assertIn("Overnight stay?", self.page)
+        self.assertIn('name="level" value="1st ($444 + HST)" required', self.html)
+        self.assertIn('name="overnight" value="None" required', self.html)
+        self.assertIn('name="overnight" value="Fri"', self.html)
+        self.assertIn('name="overnight" value="Sat"', self.html)
+        self.assertIn('name="overnight" value="Both"', self.html)
+        self.assertIn('name="category" value="Main" required', self.html)
+        self.assertIn('name="dish" required', self.html)
+        self.assertIn("Which time taking Level 1?", self.page)
         for value in (
-            "First time ($444)",
-            "2nd ($222, 50% off)",
-            "3rd ($111)",
-            "4th ($55)",
+            "1st ($444 + HST)",
+            "2nd ($222 + HST)",
+            "3rd ($111 + HST)",
+            "4th ($55 + HST)",
             "5th+ (by donation)",
+            "Salad",
+            "Side",
+            "Dessert",
+            "Drinks",
         ):
             self.assertIn(f'value="{value}"', self.html)
-        self.assertIn("First time", self.page)
-        for label in ("2nd", "3rd", "4th", "5th+"):
-            self.assertIn(label, self.page)
-        self.assertNotRegex(self.html, r'name="questions"[^>]*required')
+        self.assertIn('src="config.js"', self.html)
 
     def test_message_builder(self):
         script = r"""
@@ -171,27 +186,28 @@ const built = context.EhfLevel1.buildRegistration({
   name: 'Sample Guest',
   email: 'guest@example.com',
   phone: '(905) 555-0100',
-  city: 'Caledon East',
-  attendance: '4th ($55)',
-  overnight: '1 night',
-  questions: 'Is there parking?'
+  level: '4th ($55 + HST)',
+  overnight: 'Fri',
+  category: 'Salad',
+  dish: 'Green salad'
 });
 const packed = context.EhfLevel1.buildRegistration({
   name: 'N'.repeat(80),
   email: 'person@example.com',
   phone: '+1 416 555 0199',
-  city: 'C'.repeat(80),
-  attendance: '5th+ (by donation)',
-  overnight: '2 nights',
-  questions: 'Q'.repeat(400)
+  level: '5th+ (by donation)',
+  overnight: 'Both',
+  category: 'Main',
+  dish: 'D'.repeat(200)
 });
 const bad = context.EhfLevel1.buildRegistration({
   name: 'Ada',
   email: 'ada@example.com',
   phone: '123',
-  city: 'Toronto',
-  attendance: 'First time ($444)',
-  overnight: 'No'
+  level: '1st ($444 + HST)',
+  overnight: 'None',
+  category: 'Side',
+  dish: 'Rice'
 });
 if (built.error) process.exit(2);
 const href = new URL(built.href);
@@ -219,11 +235,13 @@ process.stdout.write(JSON.stringify(out));
             "guest@example.com",
             "(905) 555-0100",
             "Caledon East",
-            "4th ($55)",
-            "Overnight stay: 1 night",
+            "4th ($55 + HST)",
+            "Overnight: Fri ($100, breakfast included)",
+            "Potluck: Salad - Green salad",
             "The Light House, 15606 The Gore Rd, Caledon East, ON L7C 3E5",
-            "Is there parking?",
-            "January 2027, date to be confirmed",
+            "January 16",
+            "January 17",
+            "A 50% deposit holds your spot.",
             "Sending this email registers you. Preparing it does not.",
         ):
             self.assertIn(fact, data["body"])
