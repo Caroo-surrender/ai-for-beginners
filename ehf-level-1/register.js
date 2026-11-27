@@ -46,7 +46,6 @@
 
     var lines = [
       "Course: EHF Level 1 Certification Course",
-      "Facilitator: Caroo",
       "When: January 2027, date to be confirmed",
       "Where: The Light House, 15606 The Gore Rd, Caledon East, ON L7C 3E5",
       "Name: " + name,

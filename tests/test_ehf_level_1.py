@@ -56,7 +56,6 @@ class EhfLevel1Test(unittest.TestCase):
             "Energy Healing Facilitation",
             "EHF Level 1",
             "EHF Level 1 Certification Course",
-            "Caroo",
             "January 2027, date to be confirmed",
             "The Light House, 15606 The Gore Rd, Caledon East, ON L7C 3E5",
             "$444",
@@ -78,7 +77,7 @@ class EhfLevel1Test(unittest.TestCase):
             "Overnight stays available at The Light House: $100 per night, breakfast included. Let us know in the form if you'd like to stay.",
             "Online payment is being set up. We'll confirm your spot and send payment details after you register.",
             "EHF Holistic Services Canada Inc.",
-            "https://ehfpath.com",
+            "More information about the EHF program",
             SUBJECT,
             "Preparing this email does not register you.",
             "You are registered only after you press Send",
@@ -100,8 +99,14 @@ class EhfLevel1Test(unittest.TestCase):
         image = "https://caroo-surrender.github.io/ai-for-beginners/ehf-level-1/img/class.webp"
         self.assertIn(f'property="og:image" content="{image}"', self.html)
         self.assertIn('src="img/logo.png"', self.html)
-        self.assertIn('src="img/caroo.jpg"', self.html)
+        self.assertNotIn("caroo.jpg", self.html)
         self.assertIn('src="img/class.webp"', self.html)
+        without_site_urls = re.sub(r"https://caroo-surrender\.github\.io\S*", " ", self.html, flags=re.I)
+        self.assertIsNone(re.search(r"caroo|karoo", without_site_urls, flags=re.I))
+        self.assertIn('href="https://ehfpath.com"', self.html)
+        script_without_urls = re.sub(r"https://caroo-surrender\.github\.io\S*", " ", self.script, flags=re.I)
+        self.assertIsNone(re.search(r"caroo|karoo", script_without_urls, flags=re.I))
+        self.assertNotIn("Facilitator:", self.script)
         self.assertIsNone(re.search(r"January\s+(?:[1-9]|[12]\d|3[01])\b", self.html))
         self.assertNotIn("location to be confirmed", self.html)
         self.assertNotIn("location to be confirmed", self.script)
